@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial;
+  font-size: 17px;
+}
+
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+}
+
+.content {
+  position: fixed;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+}
+
+#myBtn {
+  width: 200px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none; /* This is to remove underline from link */
+  display: inline-block; /* This is to keep button-like appearance */
+}
+
+#myBtn:hover {
+  background: #ddd;
+  color: black;
+}
+</style>
+</head>
+<body>
+
+<video autoplay muted loop id="myVideo">
+  <source src="intro.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<div class="content">
+  <h1>Material Blossoms: Unveiling the Waste Tapestry</h1>
+  <p>Our project visually represents the material breakdown of America's 2018 municipal solid waste (292.4 million tons) through transformative floral forms. As viewers interact with each 'waste material flower,' objects descend, unveiling decomposition timeframes. By juxtaposing the inherent beauty of flowers with the harsh reality of waste production, the data design project strives to provoke collective contemplation and reassessment of our lifestyles and consumption habits, urging us to embrace sustainable practices for the well-being of future generations.</p>
+  <a id="myBtn" href="test.html">Go to test</a>
+</div>
+
+<script>
+var video = document.getElementById("myVideo");
+
+// There is no need for the previous JavaScript code as it was related to the button's play/pause functionality
+</script>
+
+</body>
+</html>
