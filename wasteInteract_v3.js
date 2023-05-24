@@ -1,5 +1,5 @@
 let img = [];
-let dropImg = [];  // new array for the dropping images
+let dropImg = [];  
 let dropping = [];  // array to hold the properties of any currently dropping images
 let bgImage;
 let order = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -13,11 +13,12 @@ let dropRanges;
 let button;
 let totalDiameter = 0;
 
-let totalProportions = 0;  // Calculate it once in setup()
-let imagesProperties = []; // Store each image's properties
+let totalProportions = 0;  
+let imagesProperties = []; 
 
 function preload() {
 bgImage = loadImage("https://i.imgur.com/nxU2pLl.png"); // Load the background image
+	
   img[0] = loadImage("https://i.imgur.com/ncIC6T1.png");//rubber
   img[1] = loadImage("https://i.imgur.com/vSU4DBR.png");//glass
   img[2] = loadImage("https://i.imgur.com/uhBrKBq.png");//plastics
@@ -41,17 +42,17 @@ bgImage = loadImage("https://i.imgur.com/nxU2pLl.png"); // Load the background i
 function setup() {
   const canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0, 0); // Position the canvas at the top-left corner of the window
-  imageMode(CORNER);
+  //imageMode(CORNER);
   maxDiameter = windowHeight * 1.5;
   t = 0;
 	
 // assign the values to drop ranges
 dropRanges = [
     [height - 260, height - 50],    // for dropImg[0] rubber
-    [height - 80, height] ,  // for dropImg[1] glass
+    [height - 80, height] ,  		// for dropImg[1] glass
     [height - 110, height - 30],   // for dropImg[2] plastic
     [height - 300, height - 220],   // for dropImg[3] food
-    [height - 80, height],  // for dropImg[4] metal
+    [height - 80, height],  		// for dropImg[4] metal
     [height - 260, height - 220],  // for dropImg[5] paper
     [height - 210, height - 140],   // for dropImg[6] wood
     [height - 210, height - 170]    // for dropImg[7] yardtrimming
@@ -62,7 +63,7 @@ dropRanges = [
 button = createButton('clear out');
 button.position(10, height/2);
 button.mousePressed(refreshCanvas);
-button.elt.style.letterSpacing = "1px"; 
+button.elt.style.letterSpacing = "1px";  // add spacing between letters
 	
 	// calculate total of proportions
   totalProportions = proportions.reduce((a, b) => a + b, 0);
@@ -86,7 +87,9 @@ function refreshCanvas() {
 
 function draw() {
   background(235);
-
+	
+	imageMode(CORNER);
+	
   let windowAspect = windowWidth / windowHeight;
   let imgAspect = bgImage.width / bgImage.height;
 
@@ -101,20 +104,31 @@ function draw() {
   }
 	
 //pulsing effects of the main images
+imageMode(CENTER);
 for (let i = 0; i < img.length; i++) {
   let imageProp = imagesProperties[i];
-  let newWidth = imageProp.origWidth + imageProp.origWidth * 0.12 * sin(frameCount * 0.1);
-  let newHeight = imageProp.origHeight + imageProp.origHeight * 0.12 * sin(frameCount * 0.1);
-  imageProp.width = newWidth;
+  let scaleFactor = 0.5 + 0.3 * (1 + sin(frameCount * 0.1));
+  let newWidth = imageProp.origWidth * scaleFactor;
+  let newHeight = imageProp.origHeight * scaleFactor;
+	
+   let centerX = imageProp.x + imageProp.origWidth / 2;
+   let centerY = imageProp.y + imageProp.origHeight / 2;
+  
+	imageProp.width = newWidth;
   imageProp.height = newHeight;
+// Adjust x and y to represent the center of the image
+     
+       
 }
+	imageMode(CORNER);
+	
 // Draw the main images
  for (let i = 0; i < img.length; i++) {
     let imageProp = imagesProperties[i];
     image(img[i], imageProp.x, imageProp.y, imageProp.width, imageProp.height);
-	// Add labels
-    
-    // Add labels
+	
+// Add labels
+
   textSize(12);
   let label = labels[i];
   let labelWidth = textWidth(label) + 2; // Add padding to the label width
@@ -173,7 +187,7 @@ let overlap = 5;
 
 beginShape();
 for(let x = 0; x <= width; x += 5) {
-  let y = map(noise(i*10, x * 0.05, frameCount * 0.05), 0, 1, -10, 10); // values to affect the noise
+  let y = map(noise(i*10, x * 0.05, frameCount * 0.05), 0, 1, -10, 10); // Change these values to affect the noise
   vertex(x, height - i * 50 + y - overlap);
 }
 vertex(width, height + overlap);
@@ -184,7 +198,7 @@ endShape(CLOSE);
 // Draw decompose labels
 fill(0); // Color of the text
 noStroke();
-textSize(12); // Size of the text
+textSize(12);
 text("decompose in MILLENNIA", 100, height - 30 );
 text("decompose in CENTURIES", 100, height - 85);
 text("decompose in DECADES", 100, height - 135);
@@ -196,13 +210,13 @@ cursor(overImage ? HAND : ARROW);
 
   t += 0.01;
 
-// Draw dropping images
+	// Draw dropping images
 for (let i = dropping.length - 1; i >= 0; i--) {
   let falling = dropping[i];
 
   // Check if the drop is within its range
   if (falling.y < falling.stopY) {  
-     falling.y += falling.vSpeed;  // increment y position based on the vertical speed
+       falling.y += falling.vSpeed;  // increment y position based on the vertical speed
   }
 
   // increment x position based on horizontal speed and noise
@@ -210,7 +224,7 @@ for (let i = dropping.length - 1; i >= 0; i--) {
   falling.noiseOffset += 0.01;  // increment noise offset
 
   // increment rotation angle
-  falling.rotation += falling.rotationSpeed;  
+  falling.rotation += falling.rotationSpeed;  // adjust this value to change the rotation speed
 
   // draw the image with rotation
   push();
@@ -220,6 +234,7 @@ for (let i = dropping.length - 1; i >= 0; i--) {
   pop();
 }
 }
+
 function mousePressed() {
   for (let i = 0; i < img.length; i++) {
     let imageProp = imagesProperties[i];
