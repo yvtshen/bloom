@@ -31,7 +31,7 @@ function preload() {
   dropImg[0] = loadImage("https://i.imgur.com/6wHJV69.png"); //rubber leather textile  
   dropImg[1] = loadImage("https://i.imgur.com/JXjpKVh.png"); //glass	  
   dropImg[2] = loadImage("https://i.imgur.com/ttQaN5h.png"); //plastic
-  dropImg[3] = loadImage("https://i.imgur.com/qzRvm6z.png"); //food
+  dropImg[3] = loadImage("https://i.imgur.com/INIeGdD.png"); //food
   dropImg[4] = loadImage("https://i.imgur.com/RDD8aUY.png"); //metal
   dropImg[5] = loadImage("https://i.imgur.com/fyiQjcL.png"); //paper
   dropImg[6] = loadImage("https://i.imgur.com/ZQLiSVj.png"); //wood
