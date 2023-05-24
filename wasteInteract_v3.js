@@ -17,7 +17,7 @@ let totalProportions = 0;  // Calculate it once in setup()
 let imagesProperties = []; // Store each image's properties
 
 function preload() {
-	bgImage = loadImage("https://i.imgur.com/nxU2pLl.png"); // Load the background image
+bgImage = loadImage("https://i.imgur.com/nxU2pLl.png"); // Load the background image
   img[0] = loadImage("https://i.imgur.com/ncIC6T1.png");//rubber
   img[1] = loadImage("https://i.imgur.com/vSU4DBR.png");//glass
   img[2] = loadImage("https://i.imgur.com/uhBrKBq.png");//plastics
@@ -62,7 +62,7 @@ dropRanges = [
 button = createButton('clear out');
 button.position(10, height/2);
 button.mousePressed(refreshCanvas);
-button.elt.style.letterSpacing = "1px";  // add spacing between letters
+button.elt.style.letterSpacing = "1px"; 
 	
 	// calculate total of proportions
   totalProportions = proportions.reduce((a, b) => a + b, 0);
@@ -173,7 +173,7 @@ let overlap = 5;
 
 beginShape();
 for(let x = 0; x <= width; x += 5) {
-  let y = map(noise(i*10, x * 0.05, frameCount * 0.05), 0, 1, -10, 10); // Change these values to affect the noise
+  let y = map(noise(i*10, x * 0.05, frameCount * 0.05), 0, 1, -10, 10); // values to affect the noise
   vertex(x, height - i * 50 + y - overlap);
 }
 vertex(width, height + overlap);
@@ -196,14 +196,13 @@ cursor(overImage ? HAND : ARROW);
 
   t += 0.01;
 
-	// Draw dropping images
+// Draw dropping images
 for (let i = dropping.length - 1; i >= 0; i--) {
   let falling = dropping[i];
 
   // Check if the drop is within its range
-  if (falling.y < falling.stopY) {  // change this line
-    // increment y position
-    falling.y += falling.vSpeed;  // increment y position based on the vertical speed
+  if (falling.y < falling.stopY) {  
+     falling.y += falling.vSpeed;  // increment y position based on the vertical speed
   }
 
   // increment x position based on horizontal speed and noise
@@ -211,7 +210,7 @@ for (let i = dropping.length - 1; i >= 0; i--) {
   falling.noiseOffset += 0.01;  // increment noise offset
 
   // increment rotation angle
-  falling.rotation += falling.rotationSpeed;  // adjust this value to change the rotation speed
+  falling.rotation += falling.rotationSpeed;  
 
   // draw the image with rotation
   push();
