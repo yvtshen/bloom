@@ -12,9 +12,9 @@ let spacing = 10;
 let dropRanges;
 let button;
 let totalDiameter = 0;
-
 let totalProportions = 0;  
 let imagesProperties = []; 
+let snowflakes = []; 
 
 function preload() {
 bgImage = loadImage("https://i.imgur.com/nxU2pLl.png"); // Load the background image
@@ -170,24 +170,29 @@ for (let i = 6; i >= 1; i--) {
 	stroke(180); 
 	strokeWeight(0.5); 
 
-  fill(fillColors[i-1], 200*0.6); // fill color from array with alpha set to 60%
+  	fill(fillColors[i-1], 200*0.6); // fill color from array with alpha set to 60%
 	
-let overlap = 5; 
+	let overlap = 5; 
 
-
-beginShape();
-for(let x = 0; x <= width; x += 5) {
-  let y = map(noise(i*10, x * 0.05, frameCount * 0.01), 0, 1, -15, 0.5); // Change these values to affect the noise
-  vertex(x, height - i * 50 + y - overlap);
-	
-}
+	beginShape();
+	for(let x = 0; x <= width; x += 5) {
+  		let y = map(noise(i*10, x * 0.05, frameCount * 0.01), 0, 1, -15, 0.5); // Change these values to affect the noise
+		vertex(x, height - i * 50 + y - overlap);
+	}
 vertex(width, height + overlap);
 vertex(0, height + overlap);
 endShape(CLOSE);
 	
+	 for (let j = 0; j < random(5); j++) {
+      snowflakes.push(new snowflake(height - i * 50 - 10 - overlap, height - (i-1) * 50 + 10 - overlap)); // append snowflake object
+    }
+  }
+	// Loop through snowflakes with a for..of loop
+  for (let flake of snowflakes) {
+    flake.update(); // update snowflake position
+    flake.display(); // draw snowflake
+  }
 
-}
-	
 
 
 // Draw decompose labels
@@ -235,6 +240,35 @@ for (let i = dropping.length - 1; i >= 0; i--) {
 }
 }
 
+// snowflake class
+function snowflake(yMin, yMax) {
+  // initialize coordinates within a given range
+  this.posX = random(width);
+  this.posY = random(yMin, yMax);
+  this.initialangle = random(0, 2 * PI);
+  this.size = random(1, 4);
+  this.yMax = yMax;
+
+  // radius of snowflake spiral
+  this.radius = sqrt(random(pow(width / 2, 2)));
+
+  this.update = function() {
+    // Update y position
+    this.posY += pow(this.size, 0.05);//falling speed
+
+    // Delete snowflake if past end of its section
+    if (this.posY > this.yMax) {
+      let index = snowflakes.indexOf(this);
+      snowflakes.splice(index, 1);
+    }
+  };
+
+  this.display = function() {
+    ellipse(this.posX, this.posY, this.size);
+  };
+}
+
+
 function mousePressed() {
   for (let i = 0; i < img.length; i++) {
     let imageProp = imagesProperties[i];
@@ -252,7 +286,7 @@ function mousePressed() {
         hSpeed: random(-1, 1),
         vSpeed: 5,
         range: dropRanges[i],
-        rotationSpeed: random(-0.05, 0.05),
+        rotationSpeed: random(-0.02, 0.02),
         stopY: stopY
       });
       break;
