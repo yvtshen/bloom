@@ -78,5 +78,13 @@ h2 {
 /* CSS Document */
 
 button:hover {
-  background-color: #fff; /* Apply your desired background color on hover */
+  background-color: #fff; 
+}
+.back-button {
+  border: none;
+  background-color: transparent;
+  color: #666;
+}
+.back-button:hover {
+	background-color: #E1E1E1; 
 }
