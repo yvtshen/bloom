@@ -5,10 +5,9 @@ let bgImage;
 let order = [0, 1, 2, 3, 4, 5, 6, 7];
 let labels = ["rubber+leather+textiles: 8.96%","glass: 4.19%","plastics: 12.20%","food: 21.59%","metals: 8.76%","paper+paperboard: 23.05%","wood: 6.19%","yard trimmings: 12.11%"];
 let proportions = [8.9, 4.2, 12.2, 21.6, 8.8, 23.1, 6.2, 12.1];
-let yPositions = [8, 1, 2, 4, 10, 6, 3, 6]; // in percentage
+let yPositions = [12, 1.5, 2, 4, 10, 6, 3, 6]; // in percentage
 let margin = 0.05;
 let spacing = 10;
-
 let dropRanges;
 let button;
 let totalDiameter = 0;
@@ -17,7 +16,7 @@ let imagesProperties = [];
 let snowflakes = []; 
 
 function preload() {
-bgImage = loadImage("https://i.imgur.com/nxU2pLl.png"); // Load the background image
+bgImage = loadImage("https://i.imgur.com/39zyruG.png"); // Load the background image
 	
   img[0] = loadImage("https://i.imgur.com/ncIC6T1.png");//rubber
   img[1] = loadImage("https://i.imgur.com/vSU4DBR.png");//glass
@@ -42,7 +41,6 @@ bgImage = loadImage("https://i.imgur.com/nxU2pLl.png"); // Load the background i
 function setup() {
   const canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0, 0); // Position the canvas at the top-left corner of the window
-  //imageMode(CORNER);
   maxDiameter = windowHeight * 1.5;
   t = 0;
 	
@@ -107,7 +105,7 @@ function draw() {
 imageMode(CENTER);
 for (let i = 0; i < img.length; i++) {
   let imageProp = imagesProperties[i];
-  let scaleFactor = 0.3 + 0.35 * (1 + sin(frameCount * 0.01));
+  let scaleFactor = 0.3 + 0.4 * (1 + sin(frameCount * 0.015));
 	
 
   let newWidth = imageProp.origWidth * scaleFactor;
@@ -116,9 +114,9 @@ for (let i = 0; i < img.length; i++) {
    let centerX = imageProp.x + imageProp.origWidth / 2;
    let centerY = imageProp.y + imageProp.origHeight / 2;
   
-	imageProp.width = newWidth;
+  imageProp.width = newWidth;
   imageProp.height = newHeight;
-// Adjust x and y to represent the center of the image
+
      
        
 }
@@ -134,7 +132,6 @@ for (let i = 0; i < img.length; i++) {
 	
 // If the mouse is over the image, show the label
     if (distance < imageProp.width / 2) {
-      // Add labels
       textSize(14);
       let label = labels[i];
       let labelWidth = textWidth(label) + 2; // Add padding to the label width
