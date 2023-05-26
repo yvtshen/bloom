@@ -5,11 +5,12 @@ let bgImage;
 let order = [0, 1, 2, 3, 4, 5, 6, 7];
 let labels = ["rubber+leather+textiles: 8.96%","glass: 4.19%","plastics: 12.20%","food: 21.59%","metals: 8.76%","paper+paperboard: 23.05%","wood: 6.19%","yard trimmings: 12.11%"];
 let proportions = [8.9, 4.2, 12.2, 21.6, 8.8, 23.1, 6.2, 12.1];
-let yPositions = [12, 1.5, 2, 4, 10, 6, 3, 6]; // in percentage
+let yPositions = [12, 1, 2, 4, 10, 6, 3, 6]; // in percentage
 let margin = 0.05;
 let spacing = 10;
 let dropRanges;
 let button;
+let backButton;
 let totalDiameter = 0;
 let totalProportions = 0;  
 let imagesProperties = []; 
@@ -31,9 +32,9 @@ bgImage = loadImage("https://i.imgur.com/39zyruG.png"); // Load the background i
   dropImg[0] = loadImage("https://i.imgur.com/6wHJV69.png"); //rubber leather textile  
   dropImg[1] = loadImage("https://i.imgur.com/JXjpKVh.png"); //glass	  
   dropImg[2] = loadImage("https://i.imgur.com/ttQaN5h.png"); //plastic
-  dropImg[3] = loadImage("https://i.imgur.com/INIeGdD.png"); //food
+  dropImg[3] = loadImage("https://i.imgur.com/nYGozSw.png"); //food
   dropImg[4] = loadImage("https://i.imgur.com/RDD8aUY.png"); //metal
-  dropImg[5] = loadImage("https://i.imgur.com/fyiQjcL.png"); //paper
+  dropImg[5] = loadImage("https://i.imgur.com/ipI3XRM.png"); //paper
   dropImg[6] = loadImage("https://i.imgur.com/ZQLiSVj.png"); //wood
   dropImg[7] = loadImage("https://i.imgur.com/XgFFjBj.png"); //yard trimming
 }
@@ -59,10 +60,21 @@ dropRanges = [
 	
 // clear button
 button = createButton('clear out');
-button.position(10, height/2);
+button.position(width - button.width - 10, height/2);
 button.mousePressed(refreshCanvas);
 button.elt.style.letterSpacing = "1px";  // add spacing between letters
+
+// back button
+backButton = createButton('&#8672; Back to Introduction');
+backButton.style('border', 'none');  // Remove button border
+backButton.style('outline', 'none'); // Remove button outline
+backButton.style('background-color', 'transparent');
+backButton.style('color', '#666');
+backButton.position(10, height/2);
+backButton.mousePressed(goToIntroduction);
 	
+
+
 	// calculate total of proportions
   totalProportions = proportions.reduce((a, b) => a + b, 0);
 
@@ -105,7 +117,7 @@ function draw() {
 imageMode(CENTER);
 for (let i = 0; i < img.length; i++) {
   let imageProp = imagesProperties[i];
-  let scaleFactor = 0.3 + 0.4 * (1 + sin(frameCount * 0.015));
+  let scaleFactor = 0.8 + 0.1 * (1 + sin(frameCount * 0.015));// first# is the smallest size of the image. 2nd # the size range of the pulsing effect. Bigger number bigger difference. 3nd # controls the speed of the animation.
 	
 
   let newWidth = imageProp.origWidth * scaleFactor;
@@ -291,4 +303,8 @@ function mousePressed() {
       break;
     }
   }
+}
+
+function goToIntroduction() {
+  window.location.href = "index.html";
 }
