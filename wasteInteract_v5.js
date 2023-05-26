@@ -117,7 +117,7 @@ function draw() {
 imageMode(CENTER);
 for (let i = 0; i < img.length; i++) {
   let imageProp = imagesProperties[i];
-  let scaleFactor = 0.8 + 0.1 * (1 + sin(frameCount * 0.015));// first# is the smallest size of the image. 2nd # the size range of the pulsing effect. Bigger number bigger difference. 3nd # controls the speed of the animation.
+  let scaleFactor = 0.75 + 0.2 * (1 + sin(frameCount * 0.015));// first# is the smallest size of the image. 2nd # the size range of the pulsing effect. Bigger number bigger difference. 3nd # controls the speed of the animation.
 	
 
   let newWidth = imageProp.origWidth * scaleFactor;
