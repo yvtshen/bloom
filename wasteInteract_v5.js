@@ -84,7 +84,7 @@ function refreshCanvas() {
 }
 
 function draw() {
-  background(235);
+  background(255);
 	
 	imageMode(CORNER);
 	
