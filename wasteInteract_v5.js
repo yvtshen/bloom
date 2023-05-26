@@ -66,14 +66,10 @@ button.elt.style.letterSpacing = "1px";  // add spacing between letters
 
 // back button
 backButton = createButton('&#8672; Back to Introduction');
-backButton.style('border', 'none');  // Remove button border
-backButton.style('outline', 'none'); // Remove button outline
-backButton.style('background-color', 'transparent');
-backButton.style('color', '#666');
 backButton.position(10, height/2);
 backButton.mousePressed(goToIntroduction);
+backButton.class('back-button');
 	
-
 
 	// calculate total of proportions
   totalProportions = proportions.reduce((a, b) => a + b, 0);
@@ -117,7 +113,7 @@ function draw() {
 imageMode(CENTER);
 for (let i = 0; i < img.length; i++) {
   let imageProp = imagesProperties[i];
-  let scaleFactor = 0.5 + 0.05 * (1 + sin(frameCount * 0.005));// first# is the smallest size of the image. 2nd # the size range of the pulsing effect. Bigger number bigger difference. 3nd # controls the speed of the animation.
+  let scaleFactor = 0.55 + 0.25 * (1 + sin(frameCount * 0.008));// first# is the smallest size of the image. 2nd # the size range of the pulsing effect. Bigger number bigger difference. 3nd # controls the speed of the animation.
 	
 
   let newWidth = imageProp.origWidth * scaleFactor;
