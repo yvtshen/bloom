@@ -199,17 +199,18 @@ endShape(CLOSE);
 // Draw decompose labels
 fill(0); // Color of the text
 noStroke();
-textSize(12);
+textSize(14);
 textAlign(RIGHT); // Align text to the right
+
 
 let rightEdge = width - 30; // change the right alignment of the text
 
-text("decompose in MILLENNIA", rightEdge, height - 30 );
-text("decompose in CENTURIES", rightEdge, height - 85);
-text("decompose in DECADES", rightEdge, height - 135);
-text("decompose in YEARS", rightEdge, height - 185);
-text("decompose in MONTHS", rightEdge, height - 230);
-text("decompose in WEEKS", rightEdge, height - 280);
+text("decompose in M I L L E N N I A", rightEdge, height - 30 );
+text("decompose in C E N T U R I E S", rightEdge, height - 85);
+text("decompose in D E C A D E S", rightEdge, height - 135);
+text("decompose in Y E A R S", rightEdge, height - 185);
+text("decompose in M O N T H S", rightEdge, height - 230);
+text("decompose in W E E K S", rightEdge, height - 280);
 
 	
 cursor(overImage ? HAND : ARROW);
