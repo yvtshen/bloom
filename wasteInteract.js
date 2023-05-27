@@ -1,183 +1,160 @@
 let img = [];
-let dropImg = [];  // new array for the dropping images
+let dropImg = [];  
 let dropping = [];  // array to hold the properties of any currently dropping images
-let bgImages = [];  // array to hold the background images
-let maxDiameter;
-let t;  
+let bgImage;
 let order = [0, 1, 2, 3, 4, 5, 6, 7];
-let labels = ["metals 8.76%", "food 21.59%", "plastics 12.20%", "yard trimmings 12.11%", "wood 6.19%","paper+paperboard 23.05%", "rubber+leather+textiles 8.96%", "glass 4.19%"];
-let proportions = [8.76, 21.59, 12.2, 12.11, 6.19, 23.05, 8.96, 4.19];
-let spacing;
+let labels = ["rubber+leather+textiles: 8.96%","glass: 4.19%","plastics: 12.20%","food: 21.59%","metals: 8.76%","paper+paperboard: 23.05%","wood: 6.19%","yard trimmings: 12.11%"];
+let proportions = [8.9, 4.2, 12.2, 21.6, 8.8, 23.1, 6.2, 12.1];
+let yPositions = [12, 2, 2, 4, 10, 6, 3, 6]; // in percentage
+let margin = 0.05;
+let spacing = 10;
 let dropRanges;
 let button;
-
-
+let backButton;
+let totalDiameter = 0;
+let totalProportions = 0;  
+let imagesProperties = []; 
+let snowflakes = []; 
 
 function preload() {
-  img[0] = loadImage("https://i.imgur.com/LIbHtI1.png"); //metal
-  img[1] = loadImage("https://i.imgur.com/WIPms0y.png"); //food
-  img[2] = loadImage("https://i.imgur.com/uhBrKBq.png"); //plastic
-  img[3] = loadImage("https://i.imgur.com/otWWi5W.png"); //yard trimming
-  img[4] = loadImage("https://i.imgur.com/7QKxS5c.png"); //wood
- img[5] = loadImage("https://i.imgur.com/12xZRub.png"); //paper
-  img[6] = loadImage("https://i.imgur.com/ncIC6T1.png"); //rubber leater textile
-  img[7] = loadImage("https://i.imgur.com/ero85yV.png"); //glass
+bgImage = loadImage("https://i.imgur.com/ZFAdcnS.png"); // Load the background image
+	
+  img[0] = loadImage("https://i.imgur.com/ncIC6T1.png");//rubber
+  img[1] = loadImage("https://i.imgur.com/vSU4DBR.png");//glass
+  img[2] = loadImage("https://i.imgur.com/uhBrKBq.png");//plastics
+  img[3] = loadImage("https://i.imgur.com/pJNiHxe.png");//food
+  img[4] = loadImage("https://i.imgur.com/LIbHtI1.png");//metal
+  img[5] = loadImage("https://i.imgur.com/12xZRub.png");//paper
+  img[6] = loadImage("https://i.imgur.com/7QKxS5c.png");//wood
+  img[7] = loadImage("https://i.imgur.com/otWWi5W.png");//yardtrim
 
-  // preload the dropping images
-  dropImg[0] = loadImage("https://i.imgur.com/RDD8aUY.png"); //metal
-  dropImg[1] = loadImage("https://i.imgur.com/qzRvm6z.png"); //food
+ // preload the dropping images
+  dropImg[0] = loadImage("https://i.imgur.com/6wHJV69.png"); //rubber leather textile  
+  dropImg[1] = loadImage("https://i.imgur.com/JXjpKVh.png"); //glass	  
   dropImg[2] = loadImage("https://i.imgur.com/ttQaN5h.png"); //plastic
-  dropImg[3] = loadImage("https://i.imgur.com/XgFFjBj.png"); //yard trimming
-  dropImg[4] = loadImage("https://i.imgur.com/ZQLiSVj.png"); //wood
-  dropImg[5] = loadImage("https://i.imgur.com/fyiQjcL.png"); //paper
-  dropImg[6] = loadImage("https://i.imgur.com/6wHJV69.png"); //rubber leather textile
-  dropImg[7] = loadImage("https://i.imgur.com/JXjpKVh.png"); //glass
+  dropImg[3] = loadImage("https://i.imgur.com/nYGozSw.png"); //food
+  dropImg[4] = loadImage("https://i.imgur.com/RDD8aUY.png"); //metal
+  dropImg[5] = loadImage("https://i.imgur.com/ipI3XRM.png"); //paper
+  dropImg[6] = loadImage("https://i.imgur.com/ZQLiSVj.png"); //wood
+  dropImg[7] = loadImage("https://i.imgur.com/XgFFjBj.png"); //yard trimming
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  imageMode(CENTER);
+  const canvas = createCanvas(windowWidth, windowHeight);
+  canvas.position(0, 0); // Position the canvas at the top-left corner of the window
   maxDiameter = windowHeight * 1.5;
   t = 0;
 	
 // assign the values to drop ranges
 dropRanges = [
-    [height - 80, height],    // for dropImg[0] metal
-    [height - 300, height - 220],  // for dropImg[1] food
+    [height - 260, height - 50],    // for dropImg[0] rubber
+    [height - 80, height] ,  		// for dropImg[1] glass
     [height - 110, height - 30],   // for dropImg[2] plastic
-    [height - 210, height - 170],   // for dropImg[3] yard trimming
-    [height - 210, height - 140],  // for dropImg[4] wood
+    [height - 300, height - 220],   // for dropImg[3] food
+    [height - 80, height],  		// for dropImg[4] metal
     [height - 260, height - 220],  // for dropImg[5] paper
-    [height - 260, height - 50],   // for dropImg[6] rubber
-    [height - 80, height]     // for dropImg[7] glass
+    [height - 210, height - 140],   // for dropImg[6] wood
+    [height - 210, height - 170]    // for dropImg[7] yardtrimming
   ];
 
-  // calculate the total diameter of all images
-  let totalDiameter = 0;
-  for (let i = 0; i < img.length; i++) {
-    let diameter = maxDiameter * (proportions[i] / 100);
-    totalDiameter += diameter;
-  }
+	
+// clear button
+button = createButton('clear out');
+button.position(width - button.width - 10, height/2);
+button.mousePressed(refreshCanvas);
+button.elt.style.letterSpacing = "1px";  // add spacing between letters
 
-  // calculate the spacing between the images and make it global
-  spacing = (width - totalDiameter) / (img.length + 1);
+// back button
+backButton = createButton('&#8672; Back to Introduction');
+backButton.position(10, height/2);
+backButton.mousePressed(goToIntroduction);
+backButton.class('back-button');
+	
 
-  for (let i = order.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [order[i], order[j]] = [order[j], order[i]];
-  }
+	// calculate total of proportions
+  totalProportions = proportions.reduce((a, b) => a + b, 0);
 
-	// Create a random number of background images
-  let numBgImages = random(10, 50);
-  for (let i = 0; i < numBgImages; i++) {
-    let imgIndex = floor(random(img.length));
-    let size = random(80, 300);  // Smaller sizes for more density
-    let opacity = random(20, 50);
-    let x = random(width);
-    let y = random(height / 3);  // Confine to upper third of the screen
-    bgImages.push({
-      img: img[imgIndex],
-      size: size,
-      opacity: opacity,
-      x: x,
-      y: y
-    });
-  }
+  let xpos = windowWidth * margin; // start at left margin
+  let contentWidth = windowWidth * (1 - 2 * margin); // adjust for margins
 
+  // calculate and store image properties
+for (let i = 0; i < img.length; i++) {
+    let newWidth = contentWidth * proportions[i] / totalProportions;
+    let newHeight = img[i].height * (newWidth / img[i].width);
+    let ypos = windowHeight * yPositions[i] / 100;  // calculate ypos as a percentage of window height
+    imagesProperties.push({x: xpos, y: ypos, origWidth: newWidth, origHeight: newHeight, width: newWidth, height: newHeight});
+    xpos += newWidth;
+}
 }
 
-function mousePressed() {
-  // initialize x position
-  let xPos = spacing;
-
-  for (let i = 0; i < img.length; i++) {
-    let diameter = maxDiameter * (proportions[order[i]] / 100);
-    let yOffset = map(noise(t + i), 0, 1, -20, 20) + windowHeight * 0.02;
-    let yPos = yOffset + diameter / 2;
-
-    // check if the mouse is within the image
-    if (dist(mouseX, mouseY, xPos + diameter / 2, yPos) < diameter / 2) {
-      // add a new dropping image
-      let dropSize = 50;
-      let stopY = random(dropRanges[order[i]][0], dropRanges[order[i]][1]);  // new stopY property
-		dropping.push({
-        img: dropImg[order[i]],
-        x: mouseX,
-        y: mouseY,
-        w: dropSize,
-        h: dropSize,
-        rotation: 0,  // initial rotation angle
-        hSpeed: random(-2, 2),  // random horizontal speed
-        vSpeed: 10,  // new vertical speed property
-        noiseOffset: random(1000),  // offset for the noise function
-        range: dropRanges[order[i]], // add this line
-        rotationSpeed: random(-0.1, 0.1),  // random rotation speed and direction
-          stopY: stopY  // store stopY in the object
-      });
-      break;
-    }
-    xPos += diameter + spacing;
-  }
+function refreshCanvas() {
+  dropping = [];
 }
-
-
-
-
-
-
 
 function draw() {
-  background(235);
-
+  background(255);
 	
-	// Draw the background images
-  for (let bgImg of bgImages) {
-    tint(255, bgImg.opacity);  // set the opacity of the image
-    image(bgImg.img, bgImg.x, bgImg.y, bgImg.size, bgImg.size);
+	imageMode(CORNER);
+	
+  let windowAspect = windowWidth / windowHeight;
+  let imgAspect = bgImage.width / bgImage.height;
+
+  if (imgAspect > windowAspect) {
+    // Image is wider than window - scale to fit window width
+    let newHeight = windowWidth / imgAspect;
+    image(bgImage, 0, 0, windowWidth, newHeight);
+  } else {
+    // Image is taller than window - scale to fit window height
+    let newWidth = windowHeight * imgAspect;
+    image(bgImage, 0, 0, newWidth, windowHeight);
   }
-  noTint();  // remove the tint for the rest of the images
+	
+//pulsing effects of the main images
+imageMode(CENTER);
+for (let i = 0; i < img.length; i++) {
+  let imageProp = imagesProperties[i];
+  let scaleFactor = 0.55 + 0.25 * (1 + sin(frameCount * 0.008));// first# is the smallest size of the image. 2nd # the size range of the pulsing effect. Bigger number bigger difference. 3nd # controls the speed of the animation.
 	
 
+  let newWidth = imageProp.origWidth * scaleFactor;
+  let newHeight = imageProp.origHeight * scaleFactor;
+	
+   let centerX = imageProp.x + imageProp.origWidth / 2;
+   let centerY = imageProp.y + imageProp.origHeight / 2;
+  
+  imageProp.width = newWidth;
+  imageProp.height = newHeight;
 
-  // calculate the total diameter of all images
-  let totalDiameter = 0;
-  for (let i = 0; i < img.length; i++) {
-    let diameter = maxDiameter * (proportions[i] / 100);
-    totalDiameter += diameter;
-  }
-
-  // calculate the spacing between the images
-  let spacing = (width - totalDiameter) / (img.length + 1);
-
-  let xPos = spacing;  // initialize x position
-
-  for (let i = 0; i < img.length; i++) {
-    let diameter = maxDiameter * (proportions[order[i]] / 100);
-    let yOffset = map(noise(t + i), 0, 1, -20, 20) + windowHeight * 0.02;
-    // calculate pulsing size
-    let pulse = sin(frameCount * 0.02 + i) * (diameter * 0.1);  // adjust the multiplier for faster/slower pulsing and the factor for larger/smaller pulsing
-	  
-	  
-	// draw the image at its position
-	  image(img[order[i]], xPos + (diameter + pulse) / 2, (diameter + pulse) / 2 + yOffset, diameter + pulse, diameter + pulse);
-
-    
-    textSize(12);
-    textAlign(CENTER, CENTER);
-    let label = labels[order[i]];
-    let labelWidth = textWidth(label);
-    let labelHeight = textAscent() + textDescent();
-
-// Draw black box
-    fill(0);
-	 noStroke();
-    rect(xPos + (diameter + pulse) / 2 - labelWidth / 2, diameter + pulse + yOffset + 5, labelWidth, labelHeight);
-
-    // Draw text
-    fill(255);
-    text(label, xPos + (diameter + pulse) / 2, diameter + pulse + yOffset + 5 + labelHeight / 2);
-
-    xPos += (diameter + pulse) + spacing;  // update x position
+     
+       
+}
+	imageMode(CORNER);
+	
+// Draw the main images
+ for (let i = 0; i < img.length; i++) {
+    let imageProp = imagesProperties[i];
+    image(img[i], imageProp.x, imageProp.y, imageProp.width, imageProp.height);
+	 
+	// Calculate the distance from the mouse to the center of the image
+    let distance = dist(mouseX, mouseY, imageProp.x + imageProp.width / 2, imageProp.y + imageProp.height / 2);
+	
+// If the mouse is over the image, show the label
+    if (distance < imageProp.width / 2) {
+      textSize(14);
+      let label = labels[i];
+      let labelWidth = textWidth(label) + 2; // Add padding to the label width
+      let labelHeight = 14; // Fixed label height
+      
+      let labelBoxX = imageProp.x + (imageProp.width - labelWidth) / 2; // Center the box horizontally
+      let labelBoxY = imageProp.y + imageProp.height; // Position the box below the image
+      
+      fill(0);
+      rect(labelBoxX, labelBoxY, labelWidth, labelHeight);
+      
+      textAlign(CENTER, CENTER);
+      fill(255);
+      text(label, labelBoxX + labelWidth / 2, labelBoxY + labelHeight / 2);
+    }
   }
 
   let overImage = false;
@@ -191,76 +168,72 @@ function draw() {
     }
     xPos += diameter + spacing;
   }
-
-  cursor(overImage ? HAND : ARROW);
 	
-	
-
-//noise patterns at the bottom
-	
-function drawDottedPattern(yPos, dotDensity) {
-  stroke(150); // Black color for dots
-  strokeWeight(2.5); // Normal size dots
-  for(let j = 0; j < width*height/dotDensity; j++) {
-    let x = random(width);
-    let y = random(yPos, height);
-    point(x, y);
-  }
-}
-
 
 // Draw decompose lines
 
 let fillColors = [60, 80, 130, 160, 200, 220];
 
 for (let i = 6; i >= 1; i--) {
-  let dotDensity = map(i, 1, 6, 200, 1000); // map density from light (200) to heavy (1000)
-  drawDottedPattern(height - i * 50, dotDensity);
-	
+
 	stroke(180); 
 	strokeWeight(0.5); 
 
-  fill(fillColors[i-1], 200*0.6); // fill color from array with alpha set to 60%
+  	fill(fillColors[i-1], 200*0.6); // fill color from array with alpha set to 60%
 	
-let overlap = 5; 
+	let overlap = 5; 
 
-beginShape();
-for(let x = 0; x <= width; x += 5) {
-  let y = map(noise(i*10, x * 0.05, frameCount * 0.05), 0, 1, -10, 10); // Change these values to affect the noise
-  vertex(x, height - i * 50 + y - overlap);
-}
+	beginShape();
+	for(let x = 0; x <= width; x += 5) {
+  		let y = map(noise(i*10, x * 0.05, frameCount * 0.01), 0, 1, -15, 0.5); // Change these values to affect the noise
+		vertex(x, height - i * 50 + y - overlap);
+	}
 vertex(width, height + overlap);
 vertex(0, height + overlap);
 endShape(CLOSE);
-
-}
+	
+	 for (let j = 0; j < random(5); j++) {
+      snowflakes.push(new snowflake(height - i * 50 - 10 - overlap, height - (i-1) * 50 + 10 - overlap)); // append snowflake object
+    }
+  }
+	// Loop through snowflakes with a for..of loop
+  for (let flake of snowflakes) {
+    flake.update(); // update snowflake position
+    flake.display(); // draw snowflake
+  }
 
 
 
 // Draw decompose labels
 fill(0); // Color of the text
 noStroke();
-textSize(12); // Size of the text
-text("decompose in MILLENNIA", 100, height - 30 );
-text("decompose in CENTURIES", 100, height - 85);
-text("decompose in DECADES", 100, height - 135);
-text("decompose in YEARS", 100, height - 185);
-text("decompose in MONTHS", 100, height - 230);
-text("decompose in WEEKS", 100, height - 280);
+textSize(14);
+textAlign(RIGHT); // Align text to the right
+
+
+let rightEdge = width - 30; // change the right alignment of the text
+
+text("decompose in M I L L E N N I A", rightEdge, height - 30 );
+text("decompose in C E N T U R I E S", rightEdge, height - 85);
+text("decompose in D E C A D E S", rightEdge, height - 135);
+text("decompose in Y E A R S", rightEdge, height - 185);
+text("decompose in M O N T H S", rightEdge, height - 230);
+text("decompose in W E E K S", rightEdge, height - 280);
+
 	
-// Draw dropping images
+cursor(overImage ? HAND : ARROW);
+
+  t += 0.01;
+
+	// Draw dropping images
 for (let i = dropping.length - 1; i >= 0; i--) {
   let falling = dropping[i];
 
   // Check if the drop is within its range
-  if (falling.y < falling.stopY) {  // change this line
-    // increment y position
-    falling.y += falling.vSpeed;  // increment y position based on the vertical speed
+  if (falling.y < falling.stopY) {  
+       falling.y += falling.vSpeed;  // increment y position based on the vertical speed
   }
 
-  // increment x position based on horizontal speed and noise
-  falling.x += map(noise(falling.noiseOffset), 0, 1, -2, 2) * falling.hSpeed;
-  falling.noiseOffset += 0.01;  // increment noise offset
 
   // increment rotation angle
   falling.rotation += falling.rotationSpeed;  // adjust this value to change the rotation speed
@@ -272,20 +245,62 @@ for (let i = dropping.length - 1; i >= 0; i--) {
   image(falling.img, 0, 0, falling.w, falling.h);
   pop();
 }
+}
 
+// snowflake class
+function snowflake(yMin, yMax) {
+  // initialize coordinates within a given range
+  this.posX = random(width);
+  this.posY = random(yMin, yMax);
+  this.initialangle = random(0, 2 * PI);
+  this.size = random(1, 4);
+  this.yMax = yMax;
 
+  // radius of snowflake spiral
+  this.radius = sqrt(random(pow(width / 2, 2)));
 
-	
-//refresh button
-	button = createButton('clear out');
-  button.position(10, height/2);
-  button.mousePressed(refreshCanvas);
+  this.update = function() {
+    // Update y position
+    this.posY += pow(this.size, 0.05);//falling speed
 
-	// add spacing between letters
-button.elt.style.letterSpacing = "1px";
+    // Delete snowflake if past end of its section
+    if (this.posY > this.yMax) {
+      let index = snowflakes.indexOf(this);
+      snowflakes.splice(index, 1);
+    }
+  };
+
+  this.display = function() {
+    ellipse(this.posX, this.posY, this.size);
+  };
 }
 
 
-function refreshCanvas() {
-  dropping = [];
+function mousePressed() {
+  for (let i = 0; i < img.length; i++) {
+    let imageProp = imagesProperties[i];
+    
+    if (mouseX > imageProp.x && mouseX < imageProp.x + imageProp.width && mouseY > imageProp.y && mouseY < imageProp.y + imageProp.height) {
+      let dropSize = 50;
+      let stopY = random(dropRanges[i][0], dropRanges[i][1]);
+      dropping.push({
+        img: dropImg[i],
+        x: mouseX,
+        y: mouseY,
+        w: dropSize,
+        h: dropSize,
+        rotation: 0,
+        hSpeed: random(-1, 1),
+        vSpeed: 5,
+        range: dropRanges[i],
+        rotationSpeed: random(-0.02, 0.02),
+        stopY: stopY
+      });
+      break;
+    }
+  }
+}
+
+function goToIntroduction() {
+  window.location.href = "index.html";
 }
