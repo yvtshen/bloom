@@ -1,4 +1,4 @@
-# bloom.github.io
+# https://yvtshen.github.io/bloom/
 p5.js project depicts the material breakdown of America's 2018 municipal solid waste.
 Each constructed flower represents a specific material and its percentage in the waste composition. Through user interaction, corresponding objects descend, representing the decomposition timeframe for each material in the landfill.
 
