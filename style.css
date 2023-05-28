@@ -88,3 +88,38 @@ button:hover {
 .back-button:hover {
 	background-color: #E1E1E1; 
 }
+
+
+.my-class, .my-class::before {
+  content: " ";
+ margin: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin:-10;
+  transition: all 0s;
+background-color: transparent;
+
+	cursor: pointer;
+ 
+}
+
+.my-class::before {
+  animation: mymove 2s infinite;
+  position: absolute;
+  background-color:  rgba(192,177,28,0.7);
+	
+}
+
+@-webkit-keyframes mymove {
+  50%   {
+    transform: scale(2);
+    opacity: 0
+  }
+  100%   {
+    transform: scale(2);
+    opacity: 0
+  }
+}
+
+
