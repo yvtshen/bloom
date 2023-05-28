@@ -22,12 +22,13 @@ body {
   bottom: 0;
   background: rgba(0, 0, 0, 0.05);
   font-family: 'Poppins', sans-serif;
-	font-weight: 300;
+  font-weight: 300;
   font-size: 0.85em;
-	line-height: 1.65em;
+  line-height: 1.65em;
   color: #383838;
   width: 100%;
   padding: 20px;
+
 }
 
 h1 {
@@ -42,20 +43,35 @@ h2 {
 	font-family: 'Poppins', sans-serif;
 	font-size: 1.2em
 }
+
 .columns {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
 }
 
-.column.left {
+.column {
+  padding: 0;
+}
+
+.left {
   width: 60%;
 }
 
-.column.right {
-  width: 30%;
+.right {
+  width: 40%;
+	text-align: center;
 }
 
+@media screen and (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
 
+  .left, .right {
+    width: 90%;
+	
+  }
+}
 
 #myBtn {
   width: 180px;
@@ -65,25 +81,29 @@ h2 {
   background: #383838;
   color: #fff;
   cursor: pointer;
-	text-align: center;
+  text-align: center;
   text-decoration: none; /* This is to remove underline from link */
   display: inline-block; /* This is to keep button-like appearance */
   border-radius: 20px; /* This makes the corners rounded */
+	
 }
 
 #myBtn:hover {
   background: #fff;
   color: black;
+	
 }@charset "UTF-8";
 /* CSS Document */
 
 button:hover {
   background-color: #fff; 
+	cursor: pointer;
 }
 .back-button {
   border: none;
   background-color: transparent;
   color: #666;
+	cursor: pointer;
 }
 .back-button:hover {
 	background-color: #E1E1E1; 
@@ -98,8 +118,7 @@ button:hover {
   border-radius: 50%;
   margin:-10;
   transition: all 0s;
-background-color: transparent;
-
+	background-color: transparent;
 	cursor: pointer;
  
 }

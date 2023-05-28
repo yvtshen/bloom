@@ -15,6 +15,7 @@ let totalDiameter = 0;
 let totalProportions = 0;  
 let imagesProperties = []; 
 let snowflakes = []; 
+let hoverText;
 
 function preload() {
 bgImage = loadImage("https://i.imgur.com/ZFAdcnS.png"); // Load the background image
@@ -44,6 +45,11 @@ function setup() {
   canvas.position(0, 0); // Position the canvas at the top-left corner of the window
   maxDiameter = windowHeight * 1.5;
   t = 0;
+	
+	hoverText = createP();
+    hoverText.addClass('my-class');
+    hoverText.hide(); // Hide initially
+	
 	
 // assign the values to drop ranges
 dropRanges = [
@@ -137,6 +143,8 @@ for (let i = 0; i < img.length; i++) {
 	 
 	// Calculate the distance from the mouse to the center of the image
     let distance = dist(mouseX, mouseY, imageProp.x + imageProp.width / 2, imageProp.y + imageProp.height / 2);
+	 
+	
 	
 // If the mouse is over the image, show the label
     if (distance < imageProp.width / 2) {
@@ -156,6 +164,7 @@ for (let i = 0; i < img.length; i++) {
       text(label, labelBoxX + labelWidth / 2, labelBoxY + labelHeight / 2);
     }
   }
+	
 
   let overImage = false;
   xPos = spacing;
@@ -245,6 +254,24 @@ for (let i = dropping.length - 1; i >= 0; i--) {
   image(falling.img, 0, 0, falling.w, falling.h);
   pop();
 }
+
+	//blinking cursor effects
+
+	let mouseOverImage = false;
+  for (let i = 0; i < img.length; i++) {
+    let imageProp = imagesProperties[i];
+    if (mouseX > imageProp.x && mouseX < imageProp.x + imageProp.width && mouseY > imageProp.y && mouseY < imageProp.y + imageProp.height) {
+      mouseOverImage = true;
+      break;
+    }
+  }
+
+  if (mouseOverImage) {
+    hoverText.show(); // Show the HTML element
+    hoverText.position(mouseX, mouseY); // Set its position
+  } else {
+    hoverText.hide(); // Hide the HTML element
+  }
 }
 
 // snowflake class
