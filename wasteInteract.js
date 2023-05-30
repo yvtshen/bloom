@@ -148,21 +148,24 @@ for (let i = 0; i < img.length; i++) {
 	
 // If the mouse is over the image, show the label
     if (distance < imageProp.width / 2) {
-      textSize(14);
-      let label = labels[i];
-      let labelWidth = textWidth(label) + 2; // Add padding to the label width
-      let labelHeight = 14; // Fixed label height
-      
-      let labelBoxX = imageProp.x + (imageProp.width - labelWidth) / 2; // Center the box horizontally
-      let labelBoxY = imageProp.y + imageProp.height; // Position the box below the image
-      
-      fill(0);
-      rect(labelBoxX, labelBoxY, labelWidth, labelHeight);
-      
-      textAlign(CENTER, CENTER);
-      fill(255);
-      text(label, labelBoxX + labelWidth / 2, labelBoxY + labelHeight / 2);
-    }
+    textSize(16);
+    let label = labels[i];
+    let padding = 3; // Define padding size
+    let labelWidth = textWidth(label) + 2 * padding; // Add padding to the label width
+    let labelHeight = 14 + 2 * padding; // Increase label height according to padding
+
+    let labelBoxX = imageProp.x + (imageProp.width - labelWidth) / 2; // Center the box horizontally
+    let labelBoxY = imageProp.y + imageProp.height; // Position the box below the image
+
+    fill(0);
+    rect(labelBoxX, labelBoxY, labelWidth, labelHeight);
+
+    textAlign(CENTER, CENTER);
+    fill(255);
+    // Position text in the center of the padded box
+    text(label, labelBoxX + padding + textWidth(label) / 2, labelBoxY + padding + (labelHeight - 2 * padding) / 2);
+}
+
   }
 	
 
