@@ -2,9 +2,14 @@
   box-sizing: border-box;
 }
 
-body {
+body.no-scroll {
   margin: 0;
-  overflow:hidden
+  overflow:hidden;
+
+}
+body.auto-scroll {
+  margin: 0;
+  overflow:auto;
 
 }
 
@@ -44,7 +49,9 @@ h2 {
 	font-family: 'Poppins', sans-serif;
 	font-size: 1.2em
 }
-
+h4, h5 {
+	margin-top: 20px;
+}
 
 a:link {
   text-decoration: none;
@@ -74,11 +81,11 @@ a:active {
 }
 
 .left {
-  width: 60%;
+  width: 70%;
 }
 
 .right {
-  width: 40%;
+  width: 30%;
 	text-align: center;
 }
 
